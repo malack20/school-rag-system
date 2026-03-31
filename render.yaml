@@ -3,7 +3,8 @@ services:
   - type: web
     name: school-rag-backend
     env: docker
-    rootDir: backend
+    dockerfilePath: backend.Dockerfile
+    dockerContext: .
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
@@ -30,7 +31,8 @@ services:
   - type: web
     name: school-rag-frontend
     env: docker
-    rootDir: frontend
+    dockerfilePath: frontend.Dockerfile
+    dockerContext: .
     envVars:
       - key: VITE_API_BASE_URL
         value: https://school-rag-backend.onrender.com
