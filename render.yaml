@@ -37,6 +37,7 @@ services:
     dockerfilePath: Dockerfile
     dockerBuildArgs:
       BUILD_TARGET: frontend-final
+      VITE_API_BASE_URL: https://school-rag-backend.onrender.com
     envVars:
       - key: VITE_API_BASE_URL
         value: https://school-rag-backend.onrender.com
