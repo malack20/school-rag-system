@@ -18,7 +18,7 @@ def _pinecone_query(query: str, n_results: int):
         index_name = os.getenv("PINECONE_INDEX", "school-rag")
         if not api_key:
             return []
-        pinecone.init(api_key=api_key, environment=os.getenv("PINECONE_ENV", ""))
+        pinecone.init(api_key=api_key, environment=os.getenv("PINECONE_ENVIRONMENT", ""))
         idx = pinecone.Index(index_name)
         # For brevity, we assume embeddings computed elsewhere and use server-side sparse search if available
         # In a real setup, we would embed 'query' and query by vector
