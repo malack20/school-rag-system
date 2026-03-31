@@ -1,12 +1,13 @@
 services:
   # Backend Service
   - type: web
-    name: school-rag-backend
+    name: school-rag-backend-unique
     env: docker
     dockerContext: .
     dockerfilePath: Dockerfile
     dockerBuildArgs:
       BUILD_TARGET: backend-final
+    plan: free
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
@@ -17,9 +18,9 @@ services:
       - key: DJANGO_DEBUG
         value: "False"
       - key: DJANGO_ALLOWED_HOSTS
-        value: school-rag-backend.onrender.com,school-rag-system.onrender.com,localhost,127.0.0.1
+        value: .onrender.com,localhost,127.0.0.1
       - key: DJANGO_CORS_ALLOWED_ORIGINS
-        value: https://school-rag-frontend.onrender.com
+        value: https://school-rag-frontend-unique.onrender.com
       - key: DATABASE_URL
         fromDatabase:
           name: school-rag-db
@@ -35,16 +36,17 @@ services:
 
   # Frontend Service
   - type: web
-    name: school-rag-frontend
+    name: school-rag-frontend-unique
     env: docker
     dockerContext: .
     dockerfilePath: Dockerfile
     dockerBuildArgs:
       BUILD_TARGET: frontend-final
-      VITE_API_BASE_URL: https://school-rag-backend.onrender.com
+      VITE_API_BASE_URL: https://school-rag-backend-unique.onrender.com
+    plan: free
     envVars:
       - key: VITE_API_BASE_URL
-        value: https://school-rag-backend.onrender.com
+        value: https://school-rag-backend-unique.onrender.com
 
 databases:
   - name: school-rag-db
