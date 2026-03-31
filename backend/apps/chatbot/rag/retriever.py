@@ -3,26 +3,29 @@ from core.constants import VECTOR_STORE_ENV_PATH
 from apps.documents.models import Document
 
 def _chroma_client():
+    # Only import chromadb when needed to save memory
     try:
         from chromadb import PersistentClient
         path = os.getenv(VECTOR_STORE_ENV_PATH, "./vector_store/chroma_db")
         return PersistentClient(path=path)
     except Exception:
-        # Chroma might not be available in all environments; fall back to in-db search.
         return None
 
 def _pinecone_query(query: str, n_results: int):
+    # Only import pinecone when needed to save memory
     try:
-        import pinecone
+        from pinecone import Pinecone
         api_key = os.getenv("PINECONE_API_KEY")
         index_name = os.getenv("PINECONE_INDEX", "school-rag")
         if not api_key:
             return []
-        pinecone.init(api_key=api_key, environment=os.getenv("PINECONE_ENVIRONMENT", ""))
-        idx = pinecone.Index(index_name)
-        # For brevity, we assume embeddings computed elsewhere and use server-side sparse search if available
-        # In a real setup, we would embed 'query' and query by vector
-        return []  # Placeholder
+        pc = Pinecone(api_key=api_key)
+        idx = pc.Index(index_name)
+        # Use OpenAI to embed query for Pinecone
+        from .embeddings import embed_texts
+        vec = embed_texts([query])[0]
+        results = idx.query(vector=vec, top_k=n_results, include_metadata=True)
+        return [match.metadata.get("text", "") for match in results.matches]
     except Exception:
         return []
 
