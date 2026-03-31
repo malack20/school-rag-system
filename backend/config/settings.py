@@ -17,10 +17,20 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-default-change-me")
 DEBUG = os.getenv("DJANGO_DEBUG", "True") == "True"
 
 _allowed_hosts = os.getenv("DJANGO_ALLOWED_HOSTS", "*")
-if not _allowed_hosts:
-    ALLOWED_HOSTS = ["*"]
-else:
-    ALLOWED_HOSTS = _allowed_hosts.split(",")
+ALLOWED_HOSTS = [h.strip() for h in _allowed_hosts.split(",") if h.strip()]
+
+# Add .onrender.com as a wildcard to handle dynamic Render URLs
+if ".onrender.com" not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(".onrender.com")
+
+# Trust origins for CSRF (required for POST requests in production)
+_cors_origins = os.getenv("DJANGO_CORS_ALLOWED_ORIGINS", "")
+CORS_ALLOWED_ORIGINS = [o.strip() for o in _cors_origins.split(",") if o.strip()]
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in _cors_origins.split(",") if o.strip()]
+
+# Add wildcards for production URLs to avoid CSRF issues
+if "https://school-rag-frontend.onrender.com" not in CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS.append("https://.onrender.com")
 
 
 # Application definition
