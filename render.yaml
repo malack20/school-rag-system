@@ -10,15 +10,21 @@ services:
         value: 3.11.0
       - key: DJANGO_SETTINGS_MODULE
         value: config.settings
-      # User needs to add secrets in Render dashboard
-      - key: SECRET_KEY
-        fromValue: placeholder
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: "False"
       - key: DATABASE_URL
-        fromValue: placeholder
+        fromDatabase:
+          name: school-rag-db
+          property: connectionString
       - key: OPENAI_API_KEY
-        fromValue: placeholder
+        sync: false
+      - key: PINECONE_API_KEY
+        sync: false
+      - key: PINECONE_ENVIRONMENT
+        sync: false
 
-  # Frontend Service
   - type: web
     name: school-rag-frontend
     env: static
@@ -32,3 +38,9 @@ services:
       - type: rewrite
         source: /*
         destination: /index.html
+
+databases:
+  - name: school-rag-db
+    databaseName: school_rag
+    user: admin
+    plan: free
