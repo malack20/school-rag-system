@@ -1,6 +1,9 @@
 # MASTER DOCKERFILE FOR MONOREPO DEPLOYMENT
 # This Dockerfile can build either the backend or the frontend based on the BUILD_TARGET argument.
 
+# The BUILD_TARGET arg must be declared BEFORE the first FROM to be used in FROM statements later.
+ARG BUILD_TARGET=backend-final
+
 # --- FRONTEND BUILD STAGE ---
 FROM node:18-alpine AS frontend-builder
 WORKDIR /app
@@ -28,6 +31,4 @@ EXPOSE 8000
 CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
 
 # --- FINAL SELECTOR ---
-# The BUILD_TARGET arg must be set to 'backend-final' or 'frontend-final'
-ARG BUILD_TARGET=backend-final
 FROM ${BUILD_TARGET}
