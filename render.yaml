@@ -3,8 +3,7 @@ services:
   - type: web
     name: school-rag-backend
     env: docker
-    dockerContext: backend
-    dockerfilePath: Dockerfile
+    rootDir: backend
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
@@ -31,16 +30,10 @@ services:
   - type: web
     name: school-rag-frontend
     env: docker
-    dockerContext: frontend
-    dockerfilePath: Dockerfile
+    rootDir: frontend
     envVars:
       - key: VITE_API_BASE_URL
         value: https://school-rag-backend.onrender.com
-    # Redirect all requests to index.html for SPAs (handled by Nginx in Docker)
-    # routes:
-    #   - type: rewrite
-    #     source: /*
-    #     destination: /index.html
 
 databases:
   - name: school-rag-db
