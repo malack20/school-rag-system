@@ -16,7 +16,11 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-default-change-me")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "*").split(",")
+_allowed_hosts = os.getenv("DJANGO_ALLOWED_HOSTS", "*")
+if not _allowed_hosts:
+    ALLOWED_HOSTS = ["*"]
+else:
+    ALLOWED_HOSTS = _allowed_hosts.split(",")
 
 
 # Application definition
