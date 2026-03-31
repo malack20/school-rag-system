@@ -1,6 +1,6 @@
 import os
 from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import SentenceTransformerEmbeddings
+from langchain_openai import OpenAIEmbeddings
 try:
     from langchain_text_splitters import RecursiveCharacterTextSplitter
 except ImportError:
@@ -19,7 +19,7 @@ def _llm():
         return None
 
 def _vectorstore():
-    embeddings = SentenceTransformerEmbeddings(model_name=os.getenv("EMBED_MODEL", "sentence-transformers/all-MiniLM-L6-v2"))
+    embeddings = OpenAIEmbeddings(model=os.getenv("OPENAI_EMBEDDING_MODEL", "text-embedding-3-small"))
     persist_directory = os.getenv("VECTOR_STORE_PATH", "./vector_store/chroma_db")
     return Chroma(collection_name="documents", embedding_function=embeddings, persist_directory=persist_directory)
 
