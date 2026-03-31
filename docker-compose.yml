@@ -1,0 +1,24 @@
+services:
+  backend:
+    build: ./backend
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend:/app
+      - ./vector_store:/vector_store
+      - ./backend/media:/app/media
+      - ./backend/static:/app/static
+    ports:
+      - "8000:8000"
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+  frontend:
+    build: ./frontend
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "5173:5173"
+    command: npm run dev -- --host 0.0.0.0
+    depends_on:
+      - backend

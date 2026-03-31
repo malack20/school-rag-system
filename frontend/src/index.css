@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root { height: 100%; margin: 0; }
+body { @apply bg-gray-50 text-gray-900; }
+
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: #d1d5db;
+  display: inline-block;
+  animation: dotPulse 1s infinite ease-in-out;
+}
+
+@keyframes dotPulse {
+  0% { opacity: 0.2; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-2px); }
+  100% { opacity: 0.2; transform: translateY(0); }
+}

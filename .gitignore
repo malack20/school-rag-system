@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+.env
+
+# Django
+db.sqlite3
+media/
+staticfiles/
+
+# Node
+node_modules/
+dist/
+.cache/
+.vite/
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# Docker
+.docker/
+
+# Vector store
+vector_store/
